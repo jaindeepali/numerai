@@ -3,9 +3,9 @@ validate <- function( fit, model = "" ) {
   	fcast <- predict(fit, valid, type = "class")
   }
   else{
-  	fcast <- predict(fit, valid)
+  	fcast <- predict(fit, valid)[,2]
   }
-  cm <- ifelse(valid[, target] == fcast,1,0)
-  accuracy <- sum(cm)/length(cm)
-  return(accuracy)
+  predOb <- prediction(fcast, valid$target)
+  auc <- performance(predOb, measure = "auc")
+  return(auc)
 }
